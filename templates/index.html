@@ -1,0 +1,106 @@
+{% extends 'base.html' %} {% block content %}
+
+<div style="display: flex; margin-top: 5rem" class="first-page">
+  <div class="page-filter">
+    
+    <h1>Filtrar veiculos</h1>
+
+    <form method="GET" action="/filter">
+
+      <label for="search_marca">Marca do veiculo: </label>
+      <input type="text" name="search_marca" id="search_marca" value="{{search if search else ''}}" placeholder="Ex: BMW, Tesla...">
+
+
+      <label for="search_modelo">Modelo do veiculo: </label>
+      <input type="text" name="search_modelo" id="search_modelo" value="{{search if search else ''}}" placeholder="Ex: X5, Model 3...">
+
+      <label for="num_pessoas">Número de pessoas: </label>
+      <input type="text" name="num_pessoas" id="num_pessoas" min="1" value="{{ num_pessoas if num_pessoas else '' }}">
+
+      <label for="tipo_de_veiculo">Tipo de veiculo: </label>
+      <select name="tipo_de_veiculo" id="tipo_de_veiculo">
+        <option value="">-- All Types --</option>
+        <option value="Carro" {% if tipo_de_veiculo == "Carro" %}selected{% endif %}>Carro</option>
+        <option value="Motocicleta" {% if tipo_de_veiculo == "Motocicleta" %}selected{% endif %}>Motocicleta</option>
+      </select>
+
+      
+      <label for="preco_veiculo">Preço do Veiculo: </label>
+      <select name="preco_do_veiculo" id="preco_do_veiculo">
+        <option value="" {% if not preco_do_veiculo %}selected{% endif %}></option>
+        <option value="50-75" {% if preco_do_veiculo == '50-75' %} selected {% endif %}>Entre 50€ e 100€</option>
+        <option value="75-100" {% if preco_do_veiculo == '75-100' %} selected {% endif %}>Entre 100€ e 200€"></option>
+        <option value="100-150" {% if preco_do_veiculo == '100-150' %} selected {% endif %}>Entre 150€ e 200€</option>
+        <option value="200-500" {% if preco_do_veiculo == '200-500' %} selected {% endif %}>Entre 200€ e 500€</option>
+        <option value="500-1000" {% if preco_do_veiculo == '500-1000' %} selected {% endif %}>Entre 500€ e 1000€</option>
+        <option value="1000-2500" {% if preco_do_veiculo == '1000-2500' %} selected {% endif %}>Entre 1000€ e 2500€</option>
+        <option value="2500-5000" {% if preco_do_veiculo == '2500-5000' %} selected {% endif %}>Entre 2500€ e 5000€</option>
+        <option value="5000-10000" {% if preco_do_veiculo == '5000-10000' %} selected {% endif %}>Mais do que 5000€</option>
+      </select>
+
+      </div>
+
+      <label>
+        Ordenar por:
+        <select name="ordem_prod">
+            <option value="preco_asc" {% if ordem_prod == 'preco_asc' %}selected{% endif %}>Preço (Baixo para Alto)</option>
+            <option value="preco_desc" {% if ordem_prod == 'preco_desc' %}selected{% endif %}>preço (Alto para Baixo)</option>
+            <option value="nome_asc" {% if ordem_prod == 'nome_asc' %}selected{% endif %}>Nome (A-Z)</option>
+            <option value="nome_desc" {% if ordem_prod == 'nome_desc' %}selected{% endif %}>Nome (Z-A)</option>
+            <option value="ano_asc" {% if ordem_prod == 'ano_asc' %}selected{% endif %}>Ano (Velho ao Novo)</option>
+            <option value="ano_desc" {% if ordem_prod == 'ano_desc' %}selected{% endif %}>Ano (Novo ao Velho)</option>
+            <option value="velo_asc" {% if ordem_prod == 'velo_asc' %}selected{% endif %}>Velocidade Máxima (Baixa para Alta)</option>
+            <option value="velo_desc" {% if ordem_prod == 'velo_desc' %}selected{% endif %}>Velocidade Máxima (Alta para Baixa)</option>
+        </select>
+      </label>
+     
+
+      <button type="submit">Apply Filters</button>
+  </form>
+
+    
+
+  </div>
+
+  <div class="car-grid">
+    {% if vehicles %} {% for vehicle in vehicles %}
+
+    <a style="text-decoration: none" href="{{ url_for('auth.login') }}">
+      <div class="card mb-3">
+        <div class="row g-0">
+          <div class="col-md-4 align-self-center">
+            <img
+              src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}"
+              class="car-img img-fluid rounded-start"
+              alt="..."
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">
+                {{ vehicle.marca }}
+                <span style="font-weight: 400">{{ vehicle.modelo }}</span>
+                <span style="font-size: 0.7rem; font-weight: 200"
+                  >{{ vehicle.ano }}</span
+                >
+                <span class="float-end">{{ vehicle.preco }}€/dia</span>
+              </h5>
+              <p class="card-text">{{ vehicle.desc_rapida }}</p>
+              <div class="card-specs">
+                <span>Nº de assentos: {{ vehicle.numero_de_assentos }}</span>
+                <span>Cambio: {{ vehicle.tipo_de_cambio }}</span>
+                <span>Velocidade (Max): {{ vehicle.velocidade_maxima }}</span>
+              </div>
+
+              <!-- <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %} {% endif %}
+  </div>
+</div>
+
+
+{% endblock %}

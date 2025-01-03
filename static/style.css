@@ -1,0 +1,34 @@
+body * {
+    transition: 2s !important
+}
+
+.car-grid {
+    display: grid;
+    gap: 2rem
+}
+
+.car-grid * {
+    transition: 2s
+}
+
+.card {
+    max-width: 75%;
+    border: none;
+    border-bottom: solid 1px grey;
+    border-top: solid 1px grey;
+}
+
+
+.card-specs {
+    display: grid;
+    grid-template-columns: auto auto
+}
+
+.card-specs span {
+    font-weight: 600;
+}
+
+.car-img {
+    position: relative;
+    right: 3rem;
+}

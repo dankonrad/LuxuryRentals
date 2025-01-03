@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block content %}
+<h1 class="mb-4">Página de registo</h1>
+
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label" for="username">Nome do usuário:</label>
+    <input class="form-control" type="text" name="username" id="username" placeholder="Usuário" />
+    <div class="form-text">O nome de usuário tem de possuir mais de 4 catacteres.</div>
+</div>
+  <div class="mb-3">
+    <label class="form-label" for="email">E-mail:</label>
+    <input class="form-control" type="email" name="email" id="email" placeholder="Insira o e-mail" />
+    <div class="form-text">O E-mail tem de possuir mais de 5 catacteres.</div>
+</div>
+  <div class="mb-3">
+    <label class="form-label" for="pass1">Palavra-Passe:</label>
+    <input class="form-control" type="password" name="pass1" id="pass1" placeholder="Insira a palavra-passe"/>
+    <div class="form-text">A palavra-passe tem de possuir mais de 8 catacteres.</div>
+</div>
+  <div class="mb-3">
+    <label class="form-label" for="pass2">Confirmar Palavra-Passe:</label>
+    <input class="form-control" type="password" name="pass2" id="pass2" placeholder="Confirme a palavra-passe"/>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Resgistar</button>
+</form>
+{% endblock %}
