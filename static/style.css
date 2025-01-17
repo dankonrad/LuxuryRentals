@@ -7,12 +7,8 @@ body * {
     gap: 2rem
 }
 
-.car-grid * {
-    transition: 2s
-}
 
 .card {
-    max-width: 75%;
     border: none;
     border-bottom: solid 1px grey;
     border-top: solid 1px grey;
@@ -31,4 +27,27 @@ body * {
 .car-img {
     position: relative;
     right: 3rem;
+}
+
+.vehicle-image img{
+    margin-left: 50%;
+    transform: translateX(-60%);
+    width: 50%;
+}
+
+.car-table {
+    display: flex;
+    font-size: 2rem;
+    width: 100%;
+
+}
+
+.car-table thead tr th, .car-table tbody tr td {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    margin: 0 2rem;
 }

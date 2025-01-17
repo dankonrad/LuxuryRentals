@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<div style="display: flex; margin-top: 5rem" class="first-page">
+<div style="margin-top: 5rem" class="first-page">
   <div class="page-filter">
     
     <h1>Filtrar veiculos</h1>
@@ -60,12 +60,11 @@
 
     
 
-  </div>
 
   <div class="car-grid">
     {% if vehicles %} {% for vehicle in vehicles %}
 
-    <a style="text-decoration: none" href="{{ url_for('auth.login') }}">
+    <a style="text-decoration: none" href="{{ url_for('views.get_vehicle', vehicle_id=vehicle.id) }}">
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4 align-self-center">

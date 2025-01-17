@@ -6,14 +6,16 @@ from io import BytesIO
 views = Blueprint("views", __name__)
 
 
+
+
 @views.route("/vehicle_information/<int:vehicle_id>")
 def get_vehicle(vehicle_id):
 
-     vehicle = Veiculos.query.all()
+     vehicle = Veiculos.query.get_or_404(vehicle_id)
 
      
 
-     return render_template("vehicle.html")
+     return render_template("vehicle.html" , vehicle=vehicle)
 
 @views.route("/vehicle_image/<int:vehicle_id>")
 def get_vehicle_image(vehicle_id):
@@ -105,3 +107,26 @@ def filter_vehicles():
                             tipo_de_veiculo= tipo_de_veiculo,
                             preco_do_veiculo=preco_do_veiculo,
                             ordem_prod=ordem_prod)
+
+# @views.route('/checkout', methods=['GET', 'POST'])
+# def checkout():
+#      if request.method == 'POST':
+
+#           checkout_data = checkout(
+#           first_name = request.form['first_name']
+#           last_name = request.form['last_name']
+#           email = request.form['email']
+#           address = request.form['address']
+#           city = request.form['city']
+#           )
+#           return render_template('checkout.html', 
+#                                  first_name=first_name, 
+#                                  last_name=last_name,
+#                                  email=email,
+#                                  address=address,
+#                                  city=city,)
+
+
+          
+     
+     

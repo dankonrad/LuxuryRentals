@@ -26,13 +26,13 @@ class Veiculos(db.Model):
     imagem_do_veiculo = db.Column(db.LargeBinary)
     preco = db.Column(db.Float)
     desc_rapida = db.Column(db.String(1000))
-    desc_detalhada = db.Column(db.String(1000))
+    desc_detatalhada = db.Column(db.String(1000))
     
 
  
 class Pagamento(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    forma_de_pagamento = db.Column(db.Integer)
+    formade = db.Column(db.Integer)
     reservas = db.relationship("Reservas")
 
 
