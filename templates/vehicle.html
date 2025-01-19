@@ -1,143 +1,182 @@
-{% extends "base.html" %}
+{% extends "base.html" %} {% block content %}
+<style>
+  /* Custom Styling */
+  <!-- .vehicle-images {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  } -->
 
+  .reservation-section {
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+  }
 
-{% block content %}
-    <div class="vehicle-informaion-grid">
-        <div class="vehicle-image">
-            <img src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}" alt="">
-        </div>
+  .details-section {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-top: 2rem;
+  }
 
-        <div class="vehicle-detailed-info">
-          
-              <table class="table">
-                <thead class="thead-light">
-                  
+  .summary-alert {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
 
-                <thead>
-                    <tr>
-                      <th>Ano do Veículo</th>
-                      <th>Número de portas</th>
-                      <th>Velocidade (km/h)</th>
-                      <th>Tipo de Cambio</th>
-                      <th>Categoria</th>
-                      <th>Número de assentos</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>{{ vehicle.ano }}</td>
-                      <td>{{ vehicle.numero_de_portas }}</td>
-                      <td>{{ vehicle.velocidade_maxima }}</td>
-                      <td>{{ vehicle.tipo_de_cambio }}</td>
-                      <td>{{ vehicle.categoria }}</td>
-                      <td>{{ vehicle.numero_de_assentos }}</td>
-                    </tr>
-                  </tbody>
-              </table>
-        </div>
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+  }
 
-        <div class="vehicle-detailed-description">
-            <p>{{ vehicle.desc_detatalhada }}</p>
-        </div>
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
 
-        <div class="vehicle-purchase-section">
-            <div class="container my-5">
-                <h1 class="mb-4">Checkout</h1>
-                <div class="row">
-                  <!-- Left Section: Billing Information -->
-                  <div >
-                    <h4 class="mb-3">Informação de pagamento</h4>
-                    <form>
-                      <div class="row g-3">
-                        <div class="col-md-6">
-                          <label for="firstName" class="form-label">Primeiro Nome</label>
-                          <input name="firstName" type="text" class="form-control" id="firstName" placeholder="Daniel" required>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="lastName" class="form-label">Último Nome</label>
-                          <input name="lastName type="text" class="form-control" id="lastName" placeholder="Almeida" required>
-                        </div>
-                        <div class="col-12">
-                          <label for="email" class="form-label">Email</label>
-                          <input name="email" type="email" class="form-control" id="email" placeholder="pessoa@examplo.com" required>
-                        </div>
-                        <div class="col-12">
-                          <label for="address" class="form-label">Endereço</label>
-                          <input name="address" type="text" class="form-control" id="address" placeholder="1234 rua principal" required>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="city" class="form-label">Cidade</label>
-                          <input name="citi" type="text" class="form-control" id="city" required>
-                        </div>
-                        <div class="col-md-4">
-                          <label for="state" class="form-label">Distrito</label>
-                          <select class="form-select" id="state" required>
-                            <option value="">Escolha...</option>
-                            <option>Aveiro</option>
-                            <option>Beja</option>
-                            <option>Braga</option>
-                            <option>Bragança</option>
-                            <option>Castelo Branco</option>
-                            <option>Coimbra</option>
-                            <option>Évora</option>
-                            <option>Faro</option>
-                            <option>Guarda</option>
-                            <option>Leiria</option>
-                            <option>Lisboa</option>
-                            <option>Portalegre</option>
-                            <option>Porto</option>
-                            <option>Santarém</option>
-                            <option>Setúbal</option>
-                            <option>Viana do Castelo</option>
-                            <option>Vila Real</option>
-                            <option>Viseu</option>
-                          </select>
-                        </div>
-                        <div class="col-md-2">
-                          <label for="zip" class="form-label">Código postal</label>
-                          <input type="text" class="form-control" id="zip" required>
-                        </div>
-                      </div>
-                      <hr class="my-4">
-                      <h4 class="mb-3">Pagamento</h4>
-                      <div class="my-3">
-                        <div class="form-check">
-                          <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                          <label class="form-check-label" for="credit">Crédito</label>
-                        </div>
-                        <div class="form-check">
-                          <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                          <label class="form-check-label" for="debit">Débito</label>
-                        </div>
-                        <div class="form-check">
-                          <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                          <label class="form-check-label" for="paypal">PayPal</label>
-                        </div>
-                      </div>
-                      <div class="row gy-3">
-                        <div class="col-md-6">
-                          <label for="cc-name" class="form-label">Nome no cartão</label>
-                          <input type="text" class="form-control" id="cc-name" placeholder="Daniel Almeida" required>
-                        </div>
-                        <div class="col-md-6">
-                          <label for="cc-number" class="form-label">Némero do cartão</label>
-                          <input type="text" class="form-control" id="cc-number" placeholder="1111-2222-3333-4444" required>
-                        </div>
-                        <div class="col-md-3">
-                          <label for="cc-expiration" class="form-label">Validade</label>
-                          <input type="text" class="form-control" id="cc-expiration" placeholder="MÊS/ANO" required>
-                        </div>
-                        <div class="col-md-3">
-                          <label for="cc-cvv" class="form-label">CVV</label>
-                          <input type="text" class="form-control" id="cc-cvv" placeholder="123" required>
-                        </div>
-                      </div>
-                      <hr class="my-4">
-                      <button class="w-100 btn btn-primary btn-lg" type="submit">Complete Checkout</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-        </div>
+  .vehicle-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .vehicle-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+</style>
+
+<div class="container my-5">
+  <!-- Vehicle Information Section -->
+  <div class="row">
+    <!-- Vehicle Image -->
+    <div class="col-lg-6">
+      <div class="vehicle-images">
+        <img
+          src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}"
+          class="img-fluid"
+          alt="Imagem do Veículo"
+        />
+      </div>
     </div>
+
+    <!-- Reservation Form -->
+    <div class="col-lg-6">
+      <div class="reservation-section">
+        <h4 class="mb-4">Reservar Veículo</h4>
+        <form method="POST" id="reservation-form">
+          <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}" />
+
+          <div class="mb-3">
+            <label for="data_de_inicio" class="form-label">Data de Início</label>
+            <input
+              type="date"
+              class="form-control"
+              id="data_de_inicio"
+              name="data_de_inicio"
+              value="{{ data_de_inicio }}"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="data_de_fim" class="form-label">Data de Fim</label>
+            <input
+              type="date"
+              class="form-control"
+              id="data_de_fim"
+              name="data_de_fim"
+              value="{{ data_de_fim }}"
+              required
+            />
+          </div>
+
+          <div class="summary-alert" id="rental-summary">
+            <p><strong>Dias de Aluguer:</strong> <span id="rental-days">0</span> dias</p>
+            <p><strong>Preço Total:</strong> <span id="total-price">0</span>€</p>
+          </div>
+
+          <button class="btn btn-primary w-100 mt-4" type="submit">Reservar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vehicle Details Section -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="details-section">
+        <h4 class="mb-4">Detalhes do Veículo</h4>
+        <table class="table table-bordered table-hover">
+          <tbody>
+            <tr>
+              <th>Ano do Veículo</th>
+              <td>{{ vehicle.ano }}</td>
+            </tr>
+            <tr>
+              <th>Número de Portas</th>
+              <td>{{ vehicle.numero_de_portas }}</td>
+            </tr>
+            <tr>
+              <th>Velocidade (km/h)</th>
+              <td>{{ vehicle.velocidade_maxima }}</td>
+            </tr>
+            <tr>
+              <th>Tipo de Câmbio</th>
+              <td>{{ vehicle.tipo_de_cambio }}</td>
+            </tr>
+            <tr>
+              <th>Categoria</th>
+              <td>{{ vehicle.categoria }}</td>
+            </tr>
+            <tr>
+              <th>Número de Assentos</th>
+              <td>{{ vehicle.numero_de_assentos }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vehicle Description Section -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="details-section">
+        <h4 class="mb-4">Descrição Detalhada</h4>
+        <p>{{ vehicle.desc_detatalhada }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const startDateInput = document.getElementById('data_de_inicio');
+    const endDateInput = document.getElementById('data_de_fim');
+    const rentalDaysEl = document.getElementById('rental-days');
+    const totalPriceEl = document.getElementById('total-price');
+    const rentalSummary = document.getElementById('rental-summary');
+    const dailyPrice = {{ vehicle.preco }}; // Assume this is passed from the backend
+
+    function updateSummary() {
+      const startDate = new Date(startDateInput.value);
+      const endDate = new Date(endDateInput.value);
+      if (!isNaN(startDate) && !isNaN(endDate) && endDate > startDate) {
+        const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+        rentalDaysEl.textContent = days;
+        totalPriceEl.textContent = (days * dailyPrice).toFixed(2);
+        rentalSummary.style.display = 'block';
+      } 
+    }
+
+    startDateInput.addEventListener('change', updateSummary);
+    endDateInput.addEventListener('change', updateSummary);
+  });
+</script>
 {% endblock %}

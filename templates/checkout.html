@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <!-- Vehicle Image -->
+    <div class="col-lg-6">
+      <img src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}" alt="Imagem do Veículo" class="img-fluid">
+    </div>
+
+    <!-- Vehicle Details and Description -->
+    <div class="col-lg-6">
+      <table class="table w-100 fs-5">
+        <tbody>
+          <tr>
+            <th style="text-align: left; width: 50%;">Ano do Veículo</th>
+            <td style="text-align: left;">{{ vehicle.ano }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;">Número de Portas</th>
+            <td style="text-align: left;">{{ vehicle.numero_de_portas }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;">Velocidade (km/h)</th>
+            <td style="text-align: left;">{{ vehicle.velocidade_maxima }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;">Tipo de Cambio</th>
+            <td style="text-align: left;">{{ vehicle.tipo_de_cambio }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;">Categoria</th>
+            <td style="text-align: left;">{{ vehicle.categoria }}</td>
+          </tr>
+          <tr>
+            <th style="text-align: left;">Número de Assentos</th>
+            <td style="text-align: left;">{{ vehicle.numero_de_assentos }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div style="font-size: 1.4rem; margin-top: 3rem">
+        <p><strong>Veículo:</strong> {{ vehicle.marca }} {{ vehicle.modelo }}</p>
+        <p><strong>Data de Início:</strong> {{ data_de_inicio }}</p>
+        <p><strong>Data de Fim:</strong> {{ data_de_fim }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Section -->
+  <div class="mt-5">
+    <h1 class="mb-4">Checkout</h1>
+    <form method="post">
+      <div class="row g-3">
+        <!-- Personal Information -->
+        <div class="col-md-6">
+          <label for="firstname" class="form-label">Primeiro Nome</label>
+          <input name="firstname" type="text" class="form-control" id="firstname" placeholder="Daniel" required>
+        </div>
+        <div class="col-md-6">
+          <label for="lastname" class="form-label">Último Nome</label>
+          <input name="lastname" type="text" class="form-control" id="lastname" placeholder="Almeida" required>
+        </div>
+        <div class="col-12">
+          <label for="email" class="form-label">Email</label>
+          <input name="email" type="email" class="form-control" id="email" placeholder="pessoa@examplo.com" required>
+        </div>
+        <div class="col-12">
+          <label for="endereco" class="form-label">Endereço</label>
+          <input name="endereco" type="text" class="form-control" id="endereco" placeholder="1234 rua principal" required>
+        </div>
+        <div class="col-md-6">
+          <label for="cidade" class="form-label">Cidade</label>
+          <input name="cidade" type="text" class="form-control" id="cidade" required>
+        </div>
+        <div class="col-md-4">
+          <label for="distrito" class="form-label">Distrito</label>
+          <select class="form-select" id="distrito" name="distrito" required>
+            <option value="">Escolha...</option>
+            <option>Aveiro</option>
+            <option>Beja</option>
+            <option>Braga</option>
+            <option>Bragança</option>
+            <option>Castelo Branco</option>
+            <option>Coimbra</option>
+            <option>Évora</option>
+            <option>Faro</option>
+            <option>Guarda</option>
+            <option>Leiria</option>
+            <option>Lisboa</option>
+            <option>Portalegre</option>
+            <option>Porto</option>
+            <option>Santarém</option>
+            <option>Setúbal</option>
+            <option>Viana do Castelo</option>
+            <option>Vila Real</option>
+            <option>Viseu</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="codigo_postal" class="form-label">Código Postal</label>
+          <input name="codigo_postal" type="text" class="form-control" id="codigo_postal" required>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <!-- Payment Information -->
+      <h4 class="mb-3">Pagamento</h4>
+      <div class="my-3">
+        {% for metodo_de_pagamento in metodos_de_pagamento %}
+        <div class="form-check">
+          <input value="{{ metodo_de_pagamento.id }}" id="{{ metodo_de_pagamento.forma_de_pagamento }}" name="metodo_de_pagamento" type="radio" class="form-check-input" required>
+          <label class="form-check-label" for="{{ metodo_de_pagamento.forma_de_pagamento }}">{{ metodo_de_pagamento.forma_de_pagamento }}</label>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="row gy-3">
+        <div class="col-md-6">
+          <label for="cc-name" class="form-label">Nome no Cartão</label>
+          <input name="cc-name" type="text" class="form-control" id="cc-name" placeholder="Daniel Almeida" required>
+        </div>
+        <div class="col-md-6">
+          <label for="cc-number" class="form-label">Número do Cartão</label>
+          <input name="cc-number" type="text" class="form-control" id="cc-number" placeholder="1111-2222-3333-4444" required>
+        </div>
+        <div class="col-md-3">
+          <label for="cc-expiration" class="form-label">Validade</label>
+          <input name="cc-expiration" type="text" class="form-control" id="cc-expiration" placeholder="MÊS/ANO" required>
+        </div>
+        <div class="col-md-3">
+          <label for="cc-cvv" class="form-label">CVV</label>
+          <input name="cc-cvv" type="text" class="form-control" id="cc-cvv" placeholder="123" required>
+        </div>
+      </div>
+
+      <hr class="my-4">
+      <button class="w-100 btn btn-primary btn-lg" type="submit">Complete Checkout</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

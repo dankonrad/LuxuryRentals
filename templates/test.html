@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+<form method="GET">
+    <h4 class="mb-3">Pagamento</h4>
+    <div class="my-3">
+      <div class="form-check">
+        <input id="credito" name="metodo_de_pagamento" type="radio" class="form-check-input" checked required>
+        <label class="form-check-label" for="credito">Crédito</label>
+      </div>
+      <div class="form-check">
+        <input id="debito" name="metodo_de_pagamento" type="radio" class="form-check-input" required>
+        <label class="form-check-label" for="debito">Débito</label>
+      </div>
+      <div class="form-check">
+        <input id="transferencia" name="metodo_de_pagamento" type="radio" class="form-check-input" required>
+        <label class="form-check-label" for="transferencia">Transferência Bancária</label>
+      </div>
+      <div class="form-check">
+        <input id="paypal" name="metodo_de_pagamento" type="radio" class="form-check-input" required>
+        <label class="form-check-label" for="paypal">PayPal</label>
+      </div>
+    </div>
+
+    <hr class="my-4">
+    <button class="w-100 btn btn-primary btn-lg" type="submit">Continuar</button>
+</form>
+
+{% endblock %}
