@@ -45,4 +45,12 @@ with app.app_context():
                     else:
                         print("Está disponível")
     
- 
+
+def diferenca(inicio, fim):
+
+    data_de_inicio = datetime.strptime(inicio, '%Y-%m-%d').date()
+    data_de_fim = datetime.strptime(fim, '%Y-%m-%d').date()
+
+    diferenca = data_de_fim - data_de_inicio
+    
+    print(diferenca)

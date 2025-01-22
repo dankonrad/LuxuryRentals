@@ -69,7 +69,7 @@
     <div class="col-lg-6">
       <div class="reservation-section">
         <h4 class="mb-4">Reservar Veículo</h4>
-        <form method="POST" id="reservation-form">
+        <form id="reservation-form" action="{{ url_for('views.checkout', vehicle_id=vehicle.id) }}">
           <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}" />
 
           <div class="mb-3">
@@ -97,8 +97,8 @@
           </div>
 
           <div class="summary-alert" id="rental-summary">
-            <p><strong>Dias de Aluguer:</strong> <span id="rental-days">0</span> dias</p>
-            <p><strong>Preço Total:</strong> <span id="total-price">0</span>€</p>
+            <p><strong>Dias de Aluguer:</strong> <span id="rental-days">{{ num_de_dias }}</span> dias</p>
+            <p><strong>Preço Total:</strong> <span id="total-price">{{ vehicle_preco }}</span>€</p>
           </div>
 
           <button class="btn btn-primary w-100 mt-4" type="submit">Reservar</button>
@@ -170,7 +170,7 @@
       if (!isNaN(startDate) && !isNaN(endDate) && endDate > startDate) {
         const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
         rentalDaysEl.textContent = days;
-        totalPriceEl.textContent = (days * dailyPrice).toFixed(2);
+        totalPriceEl.textContent = (days * dailyPrice).toFixed(1);
         rentalSummary.style.display = 'block';
       } 
     }

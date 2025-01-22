@@ -1,4 +1,4 @@
-from config import Blueprint, login_user, login_required, logout_user, current_user, db, request, check_password_hash,generate_password_hash, flash, render_template, redirect, url_for
+from config import Blueprint, session, login_user, login_required, logout_user, current_user, db, request, check_password_hash,generate_password_hash, flash, render_template, redirect, url_for
 from models import Cliente
 
 
@@ -53,6 +53,12 @@ def login():
             if check_password_hash(cliente.password, password):
                 flash("Bem vindo, " + cliente.user)
                 login_user(cliente, remember=True)
+
+                dados_guardados = session.pop("gravar_dados", None)
+
+                if dados_guardados:
+                    return redirect(dados_guardados["url"])
+
                 return redirect(url_for("views.index"))
             else:
                 flash("A palavra-passe está incorreta.")

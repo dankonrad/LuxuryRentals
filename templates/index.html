@@ -2,11 +2,22 @@
 
 {% block content %}
 
-<div class="container mt-5">
-  <h1 class="text-center mb-5">Veículos Disponíveis</h1>
+<div style="background-color: rgb(255, 255, 255);
+            border-radius: 10px;
+            padding: 5rem;" class="container mt-5">
+
+  {% if not vehicles %}
+
+    <h1 class="text-center mb-5"> Procure algum veículo na nossa lista:</h1>
+
+  {% else %}
+
+    <h1 class="text-center mb-5">Veículos Disponíveis</h1>
+
+  {% endif %}
 
   <!-- Filter Section -->
-  <div class="text-end mb-4">
+  <div style="{% if vehicles|length == 0 %}display: none;{% endif %}" class="text-end mb-4">
     <button
       class="btn btn-primary"
       type="button"
@@ -19,7 +30,7 @@
     </button>
   </div>
   
-  <div class="collapse" id="filterOptions">
+  <div class="{% if vehicles|length > 0 %}collapse{% endif %}" id="filterOptions">
     <div class=" card-body mb-4">
       <form method="GET" action="/filter" class="row g-3">
         <div class="col-md-6">
@@ -100,6 +111,7 @@
             class="form-control"
             id="data_de_inicio"
             name="data_de_inicio"
+            value="{{ data_de_inicio }}"
             required
           />
         </div>
@@ -111,12 +123,20 @@
             class="form-control"
             id="data_de_fim"
             name="data_de_fim"
+            value="{{ data_de_fim }}"
             required
           />
         </div>
-        <div class="col-12 text-end">
-          <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-        </div>
+
+        {% if not vehicles %}
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">Procurar Veículo</button>
+          </div>
+        {% else %}
+          <div class="col-12 text-end">
+            <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
+          </div>
+        {% endif %}
       </form>
     </div>
   </div>
@@ -126,7 +146,7 @@
     {% if vehicles %}
       {% for vehicle in vehicles %}
         <div class="col-md-6 col-lg-4 mb-4">
-          <a href="{{ url_for('views.get_vehicle', vehicle_id=vehicle.id) }}" class="text-decoration-none">
+          <a href="{{ url_for('views.get_vehicle', vehicle_id=vehicle.id, data_de_inicio=data_de_inicio, data_de_fim=data_de_fim) }}" class="text-decoration-none">
             <div class="card shadow-sm h-100">
               <img
                 src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}"
@@ -150,8 +170,7 @@
           </a>
         </div>
       {% endfor %}
-    {% else %}
-      <p class="text-center">Nenhum veículo encontrado.</p>
+
     {% endif %}
   </div>
 </div>

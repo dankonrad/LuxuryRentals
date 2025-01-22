@@ -1,4 +1,4 @@
-from config import Blueprint, send_file, jsonify, render_template, request, db, redirect, url_for, login_required
+from config import Blueprint, send_file, jsonify, render_template, request, db, redirect, url_for, login_required, session, current_user
 from models import Veiculos, Reservas, Pagamento
 from io import BytesIO
 from datetime import datetime, date, timedelta
@@ -8,7 +8,19 @@ views = Blueprint("views", __name__)
 
 
 
+def diferenca(inicio, fim):
 
+    data_de_inicio = datetime.strptime(inicio, '%Y-%m-%d').date()
+    data_de_fim = datetime.strptime(fim, '%Y-%m-%d').date()
+
+    diferenca = (data_de_fim - data_de_inicio).days
+    
+    return diferenca
+
+
+def preco_total(valor_do_carro, num_de_dias):
+
+     return valor_do_carro * num_de_dias
 
 
 @views.route("/vehicle_image/<int:vehicle_id>")
@@ -23,23 +35,16 @@ def get_vehicle_image(vehicle_id):
      
 
 
+
+
+
 @views.route('/', methods=["GET"])
 def index():
 
-     vehicles = Veiculos.query.all()
-
-     today = date.today()
-
-     tomorrow = today + timedelta(days=1)
+     user = current_user.is_authenticated
 
 
-     print(len(vehicles))
-
-     available_vehicles = [vehicle for vehicle in vehicles if vehicle.esta_disponivel(today, tomorrow)]
-
-     print(len(available_vehicles))
-
-     return render_template('index.html', vehicles=available_vehicles, today=today, tomorrow=tomorrow)
+     return render_template('index.html', user=user)
 
 
 @views.route('/filter', methods=['GET'])
@@ -82,16 +87,12 @@ def filter_vehicles():
 
      
      if data_de_inicio_str and data_de_fim_str:
-        try:
-            data_de_inicio = date.fromisoformat(data_de_inicio_str)
-            data_de_fim = date.fromisoformat(data_de_fim_str)
-        except ValueError:
-            data_de_inicio = None
-            data_de_fim = None
-     else:
-        data_de_inicio = None
-        data_de_fim = None
+        
+          data_de_inicio = date.fromisoformat(data_de_inicio_str)
+          data_de_fim = date.fromisoformat(data_de_fim_str)
 
+
+     
 
 
      if ordem_prod == "preco_asc":
@@ -110,7 +111,9 @@ def filter_vehicles():
           query = query.order_by(Veiculos.velocidade_maxima.asc())
      elif ordem_prod == "velo_desc":
           query = query.order_by(Veiculos.velocidade_maxima.desc())
-         
+
+
+
 
 
      vehicles = query.all()
@@ -150,17 +153,26 @@ def get_vehicle(vehicle_id):
 
      vehicle = Veiculos.query.get_or_404(vehicle_id)
 
-     if request.method == "POST":
+     data_de_inicio = request.args.get("data_de_inicio")
+     data_de_fim = request.args.get("data_de_fim")
 
-          data_de_inicio = request.form['data_de_inicio']
-          data_de_fim = request.form['data_de_fim']
 
-          print(data_de_inicio, data_de_fim)
+     print(preco_total(vehicle.preco, diferenca(data_de_inicio, data_de_fim)))
 
-          return redirect(url_for("views.checkout", data_de_inicio=data_de_inicio, data_de_fim=data_de_fim, vehicle_id=vehicle_id))
+     if not current_user.is_authenticated:
+
+          session["gravar_dados"] = {"url" : url_for("views.get_vehicle",vehicle_id=vehicle_id, data_de_inicio=data_de_inicio, data_de_fim=data_de_fim)}
+
+          return redirect(url_for("auth.login"))
+
 
  
-     return render_template("vehicle.html" , vehicle=vehicle)
+     return render_template("vehicle.html", 
+                            vehicle=vehicle, 
+                            data_de_inicio=data_de_inicio, 
+                            data_de_fim=data_de_fim, 
+                            num_de_dias=diferenca(data_de_inicio, data_de_fim),
+                            vehicle_preco=preco_total(vehicle.preco, diferenca(data_de_inicio, data_de_fim)))
 
 @views.route("/checkout/<int:vehicle_id>", methods=["GET","POST"])
 @login_required
@@ -170,8 +182,8 @@ def checkout(vehicle_id):
 
      metodos_de_pagamento = Pagamento.query.all()
 
-     start_date = request.args.get("data_de_inicio")
-     end_date = request.args.get("data_de_fim")
+     data_de_inicio = request.args.get("data_de_inicio")
+     data_de_fim = request.args.get("data_de_fim")
 
      
 
@@ -188,8 +200,8 @@ def checkout(vehicle_id):
                cidade = request.form["cidade"],
                distrito = request.form["distrito"],
                codigo_postal = request.form["codigo_postal"],
-               data_de_inicio = datetime.strptime(start_date, '%Y-%m-%d').date(),
-               data_de_fim = datetime.strptime(end_date, '%Y-%m-%d').date(),
+               data_de_inicio = datetime.strptime(data_de_inicio, '%Y-%m-%d').date(),
+               data_de_fim = datetime.strptime(data_de_fim, '%Y-%m-%d').date(),
 
                # DADOS DE PAGAMENTO
                metodo_de_pagamento_id = request.form["metodo_de_pagamento"],
@@ -209,4 +221,10 @@ def checkout(vehicle_id):
           return redirect(url_for("views.index"))
 
 
-     return render_template("checkout.html",data_de_inicio=start_date, data_de_fim=end_date, metodos_de_pagamento=metodos_de_pagamento, vehicle=vehicle)
+     return render_template("checkout.html",
+                            data_de_inicio=data_de_inicio, 
+                            data_de_fim=data_de_fim, 
+                            metodos_de_pagamento=metodos_de_pagamento, 
+                            vehicle=vehicle,
+                            num_de_dias=diferenca(data_de_inicio, data_de_fim),
+                            vehicle_preco=preco_total(vehicle.preco, diferenca(data_de_inicio, data_de_fim)))
