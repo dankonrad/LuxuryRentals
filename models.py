@@ -10,7 +10,7 @@ class Cliente(db.Model, UserMixin):
     user = db.Column(db.String(150))
     email = db.Column(db.String(150), unique=True)
     password = db.Column(db.String(150))
-    # reservas = db.relationship("Reservas")
+    reservas = db.relationship("Reservas")
 
 
 
@@ -71,6 +71,7 @@ class Reservas(db.Model):
     cvv = db.Column(db.String(50))
     metodo_de_pagamento_id = db.Column(db.String(50), db.ForeignKey("pagamento.id"))
     veiculo_id = db.Column(db.Integer, db.ForeignKey("veiculos.id"))
+    cliente_id = db.Column(db.Integer, db.ForeignKey("cliente.id"))
 
 
 

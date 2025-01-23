@@ -1,4 +1,4 @@
-from config import Blueprint, send_file, jsonify, render_template, request, db, redirect, url_for, login_required, session, current_user
+from config import Blueprint, send_file, jsonify, render_template, request, db, redirect, url_for, login_required, session, current_user, flash
 from models import Veiculos, Reservas, Pagamento
 from io import BytesIO
 from datetime import datetime, date, timedelta
@@ -42,6 +42,9 @@ def get_vehicle_image(vehicle_id):
 def index():
 
      user = current_user.is_authenticated
+
+     print(current_user.id)
+
 
 
      return render_template('index.html', user=user)
@@ -87,12 +90,19 @@ def filter_vehicles():
 
      
      if data_de_inicio_str and data_de_fim_str:
-        
+          
+
+          today = date.today()
+
           data_de_inicio = date.fromisoformat(data_de_inicio_str)
           data_de_fim = date.fromisoformat(data_de_fim_str)
 
-
-     
+          if data_de_inicio < today or data_de_fim < today:
+               flash("A data selecionada precisa ser maior que a data atual.", "danger")
+               return redirect(url_for('views.index'))
+          if data_de_inicio > data_de_fim:
+               flash("A data de inicio precisa ser menor que a data de fim.", "danger")
+               return redirect(url_for('views.index'))
 
 
      if ordem_prod == "preco_asc":
@@ -174,6 +184,9 @@ def get_vehicle(vehicle_id):
                             num_de_dias=diferenca(data_de_inicio, data_de_fim),
                             vehicle_preco=preco_total(vehicle.preco, diferenca(data_de_inicio, data_de_fim)))
 
+
+
+
 @views.route("/checkout/<int:vehicle_id>", methods=["GET","POST"])
 @login_required
 def checkout(vehicle_id):
@@ -209,7 +222,8 @@ def checkout(vehicle_id):
                numero_do_cartao = request.form["cc-number"],
                data_de_validade = request.form["cc-expiration"],
                cvv = request.form["cc-cvv"],
-               veiculo_id = vehicle_id
+               veiculo_id = vehicle_id,
+               cliente_id = current_user.id
                )
           
 

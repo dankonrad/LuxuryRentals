@@ -1,11 +1,13 @@
 from config import app, db, render_template, jsonify, send_file, url_for, LoginManager
 from auth import auth
 from views import views
+from user import user
 from models import Cliente
 
 
 
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(user, url_prefix='/user')
 app.register_blueprint(views)
 
 
