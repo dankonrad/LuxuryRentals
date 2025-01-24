@@ -43,8 +43,10 @@ def index():
 
      user = current_user.is_authenticated
 
-     print(current_user.id)
+     print(current_user.reservas[0].data_de_inicio)
 
+     for reserva in current_user.reservas:
+          print(reserva)
 
 
      return render_template('index.html', user=user)

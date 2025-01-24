@@ -4,6 +4,7 @@
 
     <h1>Reservas</h1>
 
-    
+        <img src="{{ url_for('views.get_vehicle_image', vehicle_id=reserva.id) }}" alt="">
+        <p>{{ reserva.data_de_inicio }} - {{ reserva.data_de_fim }}</p>
 
 {% endblock %}

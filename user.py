@@ -11,13 +11,16 @@ user = Blueprint("user", __name__)
 @login_required
 def user_page():
 
-    user = current_user.is_authenticated
 
-    current_user_reservas = Reservas.query.filter_by(cliente_id=current_user.id).all()
 
-    print(current_user.reservas)
+    reserva = current_user.reservas
 
-    for things in current_user.reservas:
-        print(things.data_de_inicio)
+    veiculo = Veiculos.query.filter_by(id=reserva.veiculo_id)
 
-    return render_template('reservas.html', user=user)
+    for reserva in current_user.reservas:
+        for veiculo in Veiculos.query.filter_by(id=reserva.veiculo_id):
+            print(veiculo.marca)
+    
+
+    return render_template('reservas.html', 
+                           reserva=reserva)
