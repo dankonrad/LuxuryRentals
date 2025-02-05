@@ -2,9 +2,60 @@
 
 {% block content %}
 
-    <h1>Reservas</h1>
+    <h1>Minhas Reservas</h1>
 
-        <img src="{{ url_for('views.get_vehicle_image', vehicle_id=reserva.id) }}" alt="">
-        <p>{{ reserva.data_de_inicio }} - {{ reserva.data_de_fim }}</p>
-
+    {% if reserva_data %}
+        {% for reserva, veiculo in reserva_data %}
+            <div class="card">
+                <div class="row">
+                    <!--  Image -->
+                    <div class="col-lg-6">
+                      <img src="{{ url_for('views.get_vehicle_image', vehicle_id=veiculo.id) }}" alt="Imagem do Veículo" class="img-fluid">
+                    </div>
+                
+                    <!-- Vehicle Details and Description -->
+                    <div class="col-lg-6">
+                      <table class="table w-100 fs-5">
+                        <tbody>
+                          <tr>
+                            <th style="text-align: left; width: 50%;">Ano do Veículo</th>
+                            <td style="text-align: left;">{{ veiculo.ano }}</td>
+                          </tr>
+                          <tr>
+                            <th style="text-align: left;">Número de Portas</th>
+                            <td style="text-align: left;">{{ veiculo.numero_de_portas }}</td>
+                          </tr>
+                          <tr>
+                            <th style="text-align: left;">Velocidade (km/h)</th>
+                            <td style="text-align: left;">{{ veiculo.velocidade_maxima }}</td>
+                          </tr>
+                          <tr>
+                            <th style="text-align: left;">Tipo de Cambio</th>
+                            <td style="text-align: left;">{{ veiculo.tipo_de_cambio }}</td>
+                          </tr>
+                          <tr>
+                            <th style="text-align: left;">Categoria</th>
+                            <td style="text-align: left;">{{ veiculo.categoria }}</td>
+                          </tr>
+                          <tr>
+                            <th style="text-align: left;">Número de Assentos</th>
+                            <td style="text-align: left;">{{ veiculo.numero_de_assentos }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                
+                
+                      <div style="font-size: 1.4rem; margin-top: 3rem">
+                        <p><strong>Veículo:</strong> {{ veiculo.marca }} {{ veiculo.modelo }}</p>
+                        <p><strong>Data de Início:</strong> {{ reserva.data_de_inicio }}</p>
+                        <p><strong>Data de Fim:</strong> {{ reserva.data_de_fim }}</p>
+                        <p><strong>Dias de Aluguer:</strong> {{ diferenca(reserva.data_de_inicio, reserva.data_de_fim) }}</span> dias</p>
+                        <p><strong>Preço Total:</strong> {{ preco_total(veiculo.preco, diferenca(reserva.data_de_inicio, reserva.data_de_fim)) }}</span>€</p>
+                      </div>
+                    </div>
+                  </div>
+                
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

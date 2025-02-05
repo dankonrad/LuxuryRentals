@@ -10,12 +10,19 @@ views = Blueprint("views", __name__)
 
 def diferenca(inicio, fim):
 
-    data_de_inicio = datetime.strptime(inicio, '%Y-%m-%d').date()
-    data_de_fim = datetime.strptime(fim, '%Y-%m-%d').date()
+     if isinstance(inicio, str):  
+          data_de_inicio = datetime.strptime(inicio, '%Y-%m-%d').date()
+     else:
+          data_de_inicio = inicio 
 
-    diferenca = (data_de_fim - data_de_inicio).days
-    
-    return diferenca
+     if isinstance(fim, str):
+          data_de_fim = datetime.strptime(fim, '%Y-%m-%d').date()
+     else:
+          data_de_fim = fim  
+
+     diferenca = (data_de_fim - data_de_inicio).days
+
+     return diferenca
 
 
 def preco_total(valor_do_carro, num_de_dias):
@@ -42,11 +49,6 @@ def get_vehicle_image(vehicle_id):
 def index():
 
      user = current_user.is_authenticated
-
-     print(current_user.reservas[0].data_de_inicio)
-
-     for reserva in current_user.reservas:
-          print(reserva)
 
 
      return render_template('index.html', user=user)
