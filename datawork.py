@@ -3,6 +3,10 @@ import sqlite3
 from models import Veiculos
 
 
+# File utilizado para adicionar ou retirar informações do banco de dados
+
+
+
 # desc_detalhada = {
 #    "Corolla": "O Toyota Corolla é um dos sedãs compactos mais populares e confiáveis do mundo. Conhecido por sua eficiência, conforto e acessibilidade, o Corolla apresenta um design elegante, excelente economia de combustível e uma reputação de longevidade. Possui tecnologias de segurança avançadas como o Toyota Safety Sense, tornando-o uma escolha ideal para trajetos diários e famílias.",
     
@@ -214,42 +218,4 @@ print("Database updated successfully!")
 
 # keyslist = list(desc_detalhada.keys())
 # print(keyslist)
-
-# <!-- 
-#   <div class="card p-3">
-#     <div class="row g-0">
-#       <div class="col-md-4">
-#         <img
-#           src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}"
-#           class="img-fluid rounded-start mt-4"
-#           alt="..."
-#         />
-#       </div>
-#       <div class="col-md-8">
-#         <div class="card-body">
-#           <h5 class="card-title">{{ vehicle.marca }} <span style="font-weight: 400;" >{{ vehicle.modelo }}</span></h5>
-#           <p style="font-weight: 500;" class="card-text">{{ vehicle.desc_rapida }}</p>
-#         </div>
-#       </div>
-#     </div>
-#   </div> -->
-
-#   <!-- <div class="card text-bg-light">
-    
-
-#         <img
-#           src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}"
-#           class="card-img img-fluid"
-#           alt="..."
-#         />
-
-#     <div class="card-img-overlay">
-#       <h5 class="card-title">{{ vehicle.marca }} <span style="font-weight: 400;" >{{ vehicle.modelo }}</span></h5>
-#       <p class="card-text">{{ desc_rapida }}</p>
-#     </div>
-
-
-
-#   </div>
-#  -->
 

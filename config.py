@@ -5,12 +5,15 @@ from flask_login import login_user, login_required, logout_user, current_user, L
 
 
 
+
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///luxuryrentals.db"
 
-app.config["SECRET_KEY"] = "asidufsjakdbslankdcdsfc"
+app.config["SECRET_KEY"] = "asidufsjakdbskgfgkjlankdcdsfc"
 
 db = SQLAlchemy(app)
+
+
 
 

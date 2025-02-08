@@ -1,34 +1,15 @@
 from config import Blueprint, send_file, jsonify, render_template, request, db, redirect, url_for, login_required, session, current_user, flash
 from models import Veiculos, Reservas, Pagamento
 from io import BytesIO
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
+from utils import diferenca, preco_total
 
 
 views = Blueprint("views", __name__)
 
 
 
-def diferenca(inicio, fim):
-
-     if isinstance(inicio, str):  
-          data_de_inicio = datetime.strptime(inicio, '%Y-%m-%d').date()
-     else:
-          data_de_inicio = inicio 
-
-     if isinstance(fim, str):
-          data_de_fim = datetime.strptime(fim, '%Y-%m-%d').date()
-     else:
-          data_de_fim = fim  
-
-     diferenca = (data_de_fim - data_de_inicio).days
-
-     return diferenca
-
-
-def preco_total(valor_do_carro, num_de_dias):
-
-     return valor_do_carro * num_de_dias
-
+# Route para fazer o display do veiculo
 
 @views.route("/vehicle_image/<int:vehicle_id>")
 def get_vehicle_image(vehicle_id):
@@ -42,8 +23,7 @@ def get_vehicle_image(vehicle_id):
      
 
 
-
-
+# Route da página inicial
 
 @views.route('/', methods=["GET"])
 def index():
@@ -54,6 +34,9 @@ def index():
      return render_template('index.html', user=user)
 
 
+
+# Route para filtrar os veiculos
+
 @views.route('/filter', methods=['GET'])
 def filter_vehicles():
 
@@ -62,6 +45,8 @@ def filter_vehicles():
      search_marca = request.args.get("search_marca", "")
 
      search_modelo = request.args.get("search_modelo", "")
+
+     categoria = request.args.get("categoria", "")
 
      num_pessoas = request.args.get("num_pessoas", type=int)
 
@@ -81,6 +66,9 @@ def filter_vehicles():
      
      if search_modelo:
           query = query.filter(Veiculos.modelo.ilike(f"%{search_modelo}%"))
+
+     if categoria:
+          query = query.filter(Veiculos.categoria == categoria)
 
      if num_pessoas:
           query = query.filter(Veiculos.numero_de_assentos >= num_pessoas )
@@ -137,11 +125,9 @@ def filter_vehicles():
      available_vehicles = []
      for vehicle in vehicles:
         if data_de_inicio and data_de_fim:
-            # Check availability for the given date range
             if vehicle.esta_disponivel(data_de_inicio, data_de_fim):
                 available_vehicles.append(vehicle)
         else:
-            # If no dates are provided, assume the vehicle is available
             available_vehicles.append(vehicle)
 
 
@@ -161,6 +147,7 @@ def filter_vehicles():
 
 
 
+# route para a página de informação do veículo
 
 @views.route("/vehicle_information/<int:vehicle_id>", methods=["GET", "POST"])
 def get_vehicle(vehicle_id):
@@ -189,6 +176,8 @@ def get_vehicle(vehicle_id):
                             vehicle_preco=preco_total(vehicle.preco, diferenca(data_de_inicio, data_de_fim)))
 
 
+
+# route para a página de checkout
 
 
 @views.route("/checkout/<int:vehicle_id>", methods=["GET","POST"])

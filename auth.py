@@ -2,8 +2,12 @@ from config import Blueprint, session, login_user, login_required, logout_user, 
 from models import Cliente
 
 
-# Está página servirá para tratar de tudo que diz respeito a autentificação
+# Este file servirá para tratar de tudo que diz respeito a autentificação
+
 auth = Blueprint("auth", __name__)
+
+
+# Route para o signup
 
 @auth.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -40,6 +44,7 @@ def signup():
     return render_template("signup.html")
     
 
+# Route para o login
 @auth.route("/login", methods= ["GET", "POST"])
 def login():
 
@@ -67,8 +72,12 @@ def login():
             
     return render_template("login.html")
 
+
+# Route para o logout
+
 @auth.route("/logout")
 @login_required
 def logout():
+    
     logout_user()
     return redirect(url_for("views.index"))

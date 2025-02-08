@@ -3,12 +3,10 @@
 {% block content %}
 <div class="container my-5">
   <div class="row">
-    <!-- Vehicle Image -->
     <div class="col-lg-6">
       <img src="{{ url_for('views.get_vehicle_image', vehicle_id=vehicle.id) }}" alt="Imagem do Veículo" class="img-fluid">
     </div>
 
-    <!-- Vehicle Details and Description -->
     <div class="col-lg-6">
       <table class="table w-100 fs-5">
         <tbody>
@@ -50,12 +48,10 @@
     </div>
   </div>
 
-  <!-- Checkout Section -->
   <div class="mt-5">
     <h1 class="mb-4">Checkout</h1>
     <form method="post">
       <div class="row g-3">
-        <!-- Personal Information -->
         <div class="col-md-6">
           <label for="firstname" class="form-label">Primeiro Nome</label>
           <input name="firstname" type="text" class="form-control" id="firstname" placeholder="Daniel" required>
@@ -108,18 +104,17 @@
 
       <hr class="my-4">
 
-      <!-- Payment Information -->
       <h4 class="mb-3">Pagamento</h4>
       <div class="my-3">
         {% for metodo_de_pagamento in metodos_de_pagamento %}
-        <div class="form-check">
-          <input value="{{ metodo_de_pagamento.id }}" id="{{ metodo_de_pagamento.forma_de_pagamento }}" name="metodo_de_pagamento" type="radio" class="form-check-input" required>
+        <div id="forma-de-pagamento" class="form-check">
+          <input value="{{ metodo_de_pagamento.id }}" id="{{ metodo_de_pagamento.forma_de_pagamento }}" name="metodo_de_pagamento" type="radio" class="form-check-input metodos" required>
           <label class="form-check-label" for="{{ metodo_de_pagamento.forma_de_pagamento }}">{{ metodo_de_pagamento.forma_de_pagamento }}</label>
         </div>
         {% endfor %}
       </div>
 
-      <div class="row gy-3">
+      <div id="dados-do-cartao" class="row gy-3 hide">
         <div class="col-md-6">
           <label for="cc-name" class="form-label">Nome no Cartão</label>
           <input name="cc-name" type="text" class="form-control" id="cc-name" placeholder="Daniel Almeida" required>
@@ -139,7 +134,8 @@
       </div>
 
       <hr class="my-4">
-      <button class="w-100 btn btn-primary btn-lg" type="submit">Complete Checkout</button>
+      <button id="completar-pagamento" class="w-100 btn btn-primary btn-lg" type="submit">Completar Pagamento</button>
+      <div id="fim"></div>
     </form>
   </div>
 </div>

@@ -1,60 +1,7 @@
 {% extends "base.html" %} {% block content %}
-<style>
-  /* Custom Styling */
-  <!-- .vehicle-images {
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  } -->
-
-  .reservation-section {
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-  }
-
-  .details-section {
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
-    margin-top: 2rem;
-  }
-
-  .summary-alert {
-    background-color: #ffffff;
-    border-radius: 5px;
-    padding: 1rem;
-    margin-top: 1rem;
-    font-size: 1.5rem;
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    border: none;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
-
-  .vehicle-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-
-  .vehicle-price {
-    font-size: 1.25rem;
-    font-weight: bold;
-  }
-</style>
 
 <div class="container my-5">
-  <!-- Vehicle Information Section -->
   <div class="row">
-    <!-- Vehicle Image -->
     <div class="col-lg-6">
       <div class="vehicle-images">
         <img
@@ -65,7 +12,6 @@
       </div>
     </div>
 
-    <!-- Reservation Form -->
     <div class="col-lg-6">
       <div class="reservation-section">
         <h4 class="mb-4">Reservar Veículo</h4>
@@ -107,7 +53,6 @@
     </div>
   </div>
 
-  <!-- Vehicle Details Section -->
   <div class="row mt-4">
     <div class="col-12">
       <div class="details-section">
@@ -144,7 +89,6 @@
     </div>
   </div>
 
-  <!-- Vehicle Description Section -->
   <div class="row mt-4">
     <div class="col-12">
       <div class="details-section">
@@ -155,6 +99,9 @@
   </div>
 </div>
 
+
+
+<!-- JAVASCRIPT para mudar o valor da reserva responsivamente -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const startDateInput = document.getElementById('data_de_inicio');
@@ -162,7 +109,6 @@
     const rentalDaysEl = document.getElementById('rental-days');
     const totalPriceEl = document.getElementById('total-price');
     const rentalSummary = document.getElementById('rental-summary');
-    const dailyPrice = {{ vehicle.preco }}; // Assume this is passed from the backend
 
     function updateSummary() {
       const startDate = new Date(startDateInput.value);

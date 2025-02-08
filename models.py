@@ -3,6 +3,11 @@ from flask_login import UserMixin
 from datetime import date
 
 
+
+# TABELAS
+
+# TABELA CLIENTE
+
 class Cliente(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(150))
@@ -12,7 +17,7 @@ class Cliente(db.Model, UserMixin):
     password = db.Column(db.String(150))
     reservas = db.relationship("Reservas")
 
-
+# TABELA VEÍCULOS
 
 class Veiculos(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
@@ -52,7 +57,7 @@ class Veiculos(db.Model):
 
         return True
     
-
+# TABELA RESERVAS
  
 class Reservas(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -74,6 +79,7 @@ class Reservas(db.Model):
     cliente_id = db.Column(db.Integer, db.ForeignKey("cliente.id"))
 
 
+# TABELA FORMA DE PAGAMENTO
 
 class Pagamento(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

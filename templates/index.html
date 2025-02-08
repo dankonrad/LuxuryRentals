@@ -33,7 +33,7 @@
   <div class="{% if vehicles|length > 0 %}collapse{% endif %}" id="filterOptions">
     <div class=" card-body mb-4">
       <form method="GET" action="/filter" class="row g-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <label for="search_marca" class="form-label">Marca do Veículo</label>
           <input
             type="text"
@@ -44,7 +44,8 @@
             placeholder="Ex: BMW, Tesla..."
           />
         </div>
-        <div class="col-md-6">
+
+        <div class="col-md-4">
           <label for="search_modelo" class="form-label">Modelo do Veículo</label>
           <input
             type="text"
@@ -55,6 +56,26 @@
             placeholder="Ex: X5, Model 3..."
           />
         </div>
+
+          <div class="col-md-4">
+            <label for="categoria" class="form-label">Categoria do Veículo</label>
+            <select name="categoria" id="categoria" class="form-select">
+              <option value="">-- Todos os Tipos --</option>
+              <option value="Caminhonete" {% if tipo_de_veiculo == "Caminhonete" %}selected{% endif %}>Caminhonete</option>
+              <option value="Citadino" {% if tipo_de_veiculo == "Citadino" %}selected{% endif %}>Citadino</option>
+              <option value="Coupe" {% if tipo_de_veiculo == "Coupe" %}selected{% endif %}>Coupe</option>
+              <option value="Esportivo" {% if tipo_de_veiculo == "Esportivo" %}selected{% endif %}>Esportivo</option>
+              <option value="Sedan" {% if tipo_de_veiculo == "Sedan" %}selected{% endif %}>Sedan</option>
+              <option value="SUV" {% if tipo_de_veiculo == "SUV" %}selected{% endif %}>SUV</option>
+              <option value="Scooter" {% if tipo_de_veiculo == "Scooter" %}selected{% endif %}>Scooter (Motocicleta)</option>
+              <option value="Touring" {% if tipo_de_veiculo == "Touring" %}selected{% endif %}>Touring (Motocicleta)</option>
+              <option value="Naked" {% if tipo_de_veiculo == "Naked" %}selected{% endif %}>Naked (Motocicleta)</option>
+              <option value="Esportiva" {% if tipo_de_veiculo == "Esportiva" %}selected{% endif %}>Esportiva (Motocicleta)</option>
+              <option value="Aventura" {% if tipo_de_veiculo == "Aventura" %}selected{% endif %}>Aventura (Motocicleta)</option>
+            </select>
+          </div>
+
+
         <div class="col-md-4">
           <label for="num_pessoas" class="form-label">Número de Pessoas</label>
           <input
@@ -66,6 +87,7 @@
             value="{{ num_pessoas if num_pessoas else '' }}"
           />
         </div>
+
         <div class="col-md-4">
           <label for="tipo_de_veiculo" class="form-label">Tipo de Veículo</label>
           <select name="tipo_de_veiculo" id="tipo_de_veiculo" class="form-select">

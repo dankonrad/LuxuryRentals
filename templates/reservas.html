@@ -2,60 +2,54 @@
 
 {% block content %}
 
-    <h1>Minhas Reservas</h1>
+<div class="container">
+    <h1 class="text-center mt-4">Minhas Reservas</h1>
 
     {% if reserva_data %}
         {% for reserva, veiculo in reserva_data %}
-            <div class="card">
-                <div class="row">
-                    <!--  Image -->
-                    <div class="col-lg-6">
-                      <img src="{{ url_for('views.get_vehicle_image', vehicle_id=veiculo.id) }}" alt="Imagem do Veículo" class="img-fluid">
+            <div class="card shadow-lg p-4 my-4">
+                <div class="row g-4">
+                    <div class="col-md-5">
+                        <img src="{{ url_for('views.get_vehicle_image', vehicle_id=veiculo.id) }}" 
+                             alt="Imagem do Veículo" class="img-fluid rounded">
                     </div>
-                
-                    <!-- Vehicle Details and Description -->
-                    <div class="col-lg-6">
-                      <table class="table w-100 fs-5">
-                        <tbody>
-                          <tr>
-                            <th style="text-align: left; width: 50%;">Ano do Veículo</th>
-                            <td style="text-align: left;">{{ veiculo.ano }}</td>
-                          </tr>
-                          <tr>
-                            <th style="text-align: left;">Número de Portas</th>
-                            <td style="text-align: left;">{{ veiculo.numero_de_portas }}</td>
-                          </tr>
-                          <tr>
-                            <th style="text-align: left;">Velocidade (km/h)</th>
-                            <td style="text-align: left;">{{ veiculo.velocidade_maxima }}</td>
-                          </tr>
-                          <tr>
-                            <th style="text-align: left;">Tipo de Cambio</th>
-                            <td style="text-align: left;">{{ veiculo.tipo_de_cambio }}</td>
-                          </tr>
-                          <tr>
-                            <th style="text-align: left;">Categoria</th>
-                            <td style="text-align: left;">{{ veiculo.categoria }}</td>
-                          </tr>
-                          <tr>
-                            <th style="text-align: left;">Número de Assentos</th>
-                            <td style="text-align: left;">{{ veiculo.numero_de_assentos }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                
-                
-                      <div style="font-size: 1.4rem; margin-top: 3rem">
-                        <p><strong>Veículo:</strong> {{ veiculo.marca }} {{ veiculo.modelo }}</p>
-                        <p><strong>Data de Início:</strong> {{ reserva.data_de_inicio }}</p>
-                        <p><strong>Data de Fim:</strong> {{ reserva.data_de_fim }}</p>
-                        <p><strong>Dias de Aluguer:</strong> {{ diferenca(reserva.data_de_inicio, reserva.data_de_fim) }}</span> dias</p>
-                        <p><strong>Preço Total:</strong> {{ preco_total(veiculo.preco, diferenca(reserva.data_de_inicio, reserva.data_de_fim)) }}</span>€</p>
-                      </div>
+
+                    <div class="col-md-7">
+                        <h3 class="text-primary">{{ veiculo.marca }} {{ veiculo.modelo }}</h3>
+                        <p><strong>Ano:</strong> {{ veiculo.ano }}</p>
+                        <p><strong>Categoria:</strong> {{ veiculo.categoria }}</p>
+                        <p><strong>Tipo de Câmbio:</strong> {{ veiculo.tipo_de_cambio }}</p>
+                        <p><strong>Número de Assentos:</strong> {{ veiculo.numero_de_assentos }}</p>
+                        <p><strong>Velocidade Máxima:</strong> {{ veiculo.velocidade_maxima }} km/h</p>
+
+                        <form method="POST" action="{{ url_for('usuario.update_reservation', reserva_id=reserva.id) }}" class="mt-3">
+                            <label for="data_de_inicio"><strong>Data de Início:</strong></label>
+                            <input type="date" name="data_de_inicio" class="form-control" value="{{ reserva.data_de_inicio }}" required>
+
+                            <label for="data_de_fim" class="mt-2"><strong>Data de Fim:</strong></label>
+                            <input type="date" name="data_de_fim" class="form-control" value="{{ reserva.data_de_fim }}" required>
+
+                            <p class="mt-3"><strong>Dias de Aluguel:</strong> 
+                                {{ diferenca(reserva.data_de_inicio, reserva.data_de_fim) }} dias
+                            </p>
+
+                            <p><strong>Preço Total:</strong> 
+                                {{ preco_total(veiculo.preco, diferenca(reserva.data_de_inicio, reserva.data_de_fim)) }}€
+                            </p>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" class="btn btn-success">Atualizar Reserva</button>
+                                <a href="{{ url_for('usuario.cancel_reservation', reserva_id=reserva.id) }}" class="btn btn-danger">
+                                    Cancelar Reserva
+                                </a>
+                            </div>
+                        </form>
                     </div>
-                  </div>
-                
+                </div>
             </div>
         {% endfor %}
+    {% else %}
+        <p class="text-center mt-4">Você ainda não tem reservas.</p>
     {% endif %}
+</div>
 {% endblock %}
